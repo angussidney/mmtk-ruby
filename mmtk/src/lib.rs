@@ -25,5 +25,10 @@ impl VMBinding for Ruby {
 }
 
 lazy_static! {
-    pub static ref SINGLETON: MMTK<Ruby> = MMTK::new();
+    pub static ref SINGLETON: MMTK<Ruby> = {
+        #[cfg(feature = "nogc")]
+        std::env::set_var("MMTK_PLAN", "NoGC");
+
+        MMTK::new()
+    };
 }

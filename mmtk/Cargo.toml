@@ -18,10 +18,15 @@ lto = true
 # Definitions for interoperating with C code on the ruby side
 libc = "0.2"
 lazy_static = "1.1"
-
 # Comment/uncomment for prod/local code respectively
-mmtk = { git = "ssh://git@github.com/mmtk/mmtk-core.git", rev = "72ccb2850e2d2572463abd7242daf53325f73d2e" }
-# mmtk = { path = "../repos/mmtk-core" }
+# mmtk = { git = "ssh://git@github.com/mmtk/mmtk-core.git", rev = "6217ff6bb17e11594c22cae1b5c04810f2565e0f" }
+mmtk = { path = "../repos/mmtk-core" }
 
 [features]
-nogc = ["mmtk/nogc"]
+default = []
+# We can select the plan at runtime. So no need to use any of these features.
+# However, if any of these is provided during build-time, we will ignore any runtime flag and 
+# always run this plan. Performance-wise there is no difference. The main reason for these features
+# is to temporarily allow running performance tests without changing performance scripts.
+# (adapted from OpenJDK PR #42)
+nogc = []

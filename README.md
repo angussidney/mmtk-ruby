@@ -11,18 +11,16 @@ To build a copy of MMTk Ruby:
 ```bash
 # Clone sources
 git clone https://github.com/angussidney/mmtk-ruby.git
-cd mmtk-ruby
-git checkout 88dd50bc # Latest stable version of the binding
-mkdir repos && cd repos
+mkdir mmtk-ruby/repos && cd mmtk-ruby/repos
 git clone https://github.com/angussidney/ruby.git
 cd ../mmtk
 
 # Build MMTk. Optionally edit Cargo.toml to use a local working copy
 # of mmtk-core rather than a fresh cloned copy
-export RUSTUP_TOOLCHAIN=nightly-2020-07-08
+export RUSTUP_TOOLCHAIN=nightly-2020-12-20
 # Add --release to include optimisations. Highly recommended when
 # not debugging (yields a huge performance increase)
-cargo build --features nogc
+cargo build
 cp target/debug/libmmtk_ruby.* ../repos/ruby/
 
 # Build Ruby with MMTk enabled
@@ -34,6 +32,7 @@ autoconf
 CFLAGS="-O0 -ggdb3 -DUSE_THIRD_PARTY_HEAP -DUSE_TRANSIENT_HEAP=0" ./configure prefix="$PWD/build"
 # Note: this option is currently broken and allows unbounded heap sizes (bug in mmtk-core, #214)
 export THIRD_PARTY_HEAP_LIMIT=4000000
+export MMTK_PLAN=NoGC
 make install -j
 export PATH=$PWD/build/bin:$PATH
 

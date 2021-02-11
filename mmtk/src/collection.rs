@@ -18,11 +18,11 @@ impl Collection<Ruby> for VMCollection {
     }
 
     fn block_for_gc(_tls: OpaquePointer) {
-        unimplemented!();
+        return;
     }
 
     fn spawn_worker_thread(_tls: OpaquePointer, _ctx: Option<&Worker<MMTK<Ruby>>>) {
-        unimplemented!();
+        return;
     }
 
     fn prepare_mutator<T: MutatorContext<Ruby>>(_tls: OpaquePointer, _mutator: &T) {

@@ -6,7 +6,6 @@ use std::ffi::CStr;
 use mmtk::memory_manager;
 use mmtk::AllocationSemantics;
 use mmtk::util::{ObjectReference, OpaquePointer, Address};
-use mmtk::SelectedPlan;
 use mmtk::scheduler::GCWorker;
 use mmtk::Mutator;
 use mmtk::MMTK;
@@ -28,23 +27,23 @@ pub extern "C" fn start_control_collector(tls: OpaquePointer) {
 }
 
 #[no_mangle]
-pub extern "C" fn bind_mutator(tls: OpaquePointer) -> *mut Mutator<SelectedPlan<Ruby>> {
+pub extern "C" fn bind_mutator(tls: OpaquePointer) -> *mut Mutator<Ruby> {
     Box::into_raw(memory_manager::bind_mutator(&SINGLETON, tls))
 }
 
 #[no_mangle]
-pub extern "C" fn destroy_mutator(mutator: *mut Mutator<SelectedPlan<Ruby>>) {
+pub extern "C" fn destroy_mutator(mutator: *mut Mutator<Ruby>) {
     memory_manager::destroy_mutator(unsafe { Box::from_raw(mutator) })
 }
 
 #[no_mangle]
-pub extern "C" fn alloc(mutator: *mut Mutator<SelectedPlan<Ruby>>, size: usize,
+pub extern "C" fn alloc(mutator: *mut Mutator<Ruby>, size: usize,
                     align: usize, offset: isize, semantics: AllocationSemantics) -> Address {
     memory_manager::alloc::<Ruby>(unsafe { &mut *mutator }, size, align, offset, semantics)
 }
 
 #[no_mangle]
-pub extern "C" fn post_alloc(mutator: *mut Mutator<SelectedPlan<Ruby>>, refer: ObjectReference,
+pub extern "C" fn post_alloc(mutator: *mut Mutator<Ruby>, refer: ObjectReference,
                                         bytes: usize, semantics: AllocationSemantics) {
     memory_manager::post_alloc::<Ruby>(unsafe { &mut *mutator }, refer, bytes, semantics)
 }

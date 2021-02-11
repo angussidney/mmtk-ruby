@@ -1,5 +1,5 @@
 use mmtk::vm::Scanning;
-use mmtk::{TransitiveClosure, SelectedPlan, Mutator};
+use mmtk::{TransitiveClosure, Mutator};
 use mmtk::util::{ObjectReference, OpaquePointer, Address};
 use mmtk::scheduler::gc_works::*;
 use mmtk::scheduler::GCWorker;
@@ -46,7 +46,7 @@ impl Scanning<Ruby> for VMScanning {
         unimplemented!()
     }
 
-    fn scan_thread_root<W: ProcessEdgesWork<VM=Ruby>>(_mutator: &'static mut Mutator<SelectedPlan<Ruby>>, _tls: OpaquePointer) {
+    fn scan_thread_root<W: ProcessEdgesWork<VM=Ruby>>(_mutator: &'static mut Mutator<Ruby>, _tls: OpaquePointer) {
         unimplemented!()
     }
 
